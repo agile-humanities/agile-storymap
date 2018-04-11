@@ -160,8 +160,6 @@ class ConfigForm extends Form implements TranslatorAwareInterface {
     ]);
 
     $inputFilter = $this->getInputFilter();
-
-
     $defaultsFilter = $inputFilter->get('storymap_defaults');
     $defaultsFilter->add([
       'name' => 'item_title',
@@ -175,7 +173,18 @@ class ConfigForm extends Form implements TranslatorAwareInterface {
       'name' => 'item_date',
       'required' => TRUE,
     ]);
-
+    $defaultsFilter->add([
+      'name' => 'item_location',
+      'required' => TRUE,
+    ]);
+    $defaultsFilter->add([
+      'name' => 'item_type',
+      'required' => FALSE,
+    ]);
+    $defaultsFilter->add([
+      'name' => 'item_contributor',
+      'required' => FALSE,
+    ]);
     $defaultsFilter->add([
       'name' => 'viewer',
       'required' => FALSE,
