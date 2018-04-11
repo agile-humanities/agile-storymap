@@ -1,0 +1,18 @@
+<div id="storymap-<?php echo $blockId; ?>" style="width: 100%; height: 600px"></div>
+
+<script>
+    jQuery(document).ready(function($) {
+        // get the location for the json data
+        var jsonStorymapUri = '<?php echo $this->url('storymap-block', ['block-id' => $blockId]); ?>';
+
+        $.getJSON(jsonStorymapUri, function(data) {
+            console.log('data ', data);
+
+
+            var storymapDivID = 'storymap-<?php echo $blockId; ?>';
+            var storymap_options = {};
+            window.storymap = new VCO.StoryMap(storymapDivID, data, storymap_options);
+
+        });
+    });
+</script>
