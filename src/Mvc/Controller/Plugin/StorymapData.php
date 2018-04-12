@@ -99,8 +99,8 @@ class StorymapData extends AbstractPlugin
         'text' => $itemDescription,
       ];
       $slide['location'] = [
-        'lat' => $lat,
-        'lon' => $long,
+        'lat' => trim($lat),
+        'lon' => trim($long),
       ];
       $slide['media'] = [
         'url' => $mediaUrl,
@@ -116,6 +116,7 @@ class StorymapData extends AbstractPlugin
     }
     $data = [];
     $data['storymap']['slides'] = $slides;
+
     return $data;
   }
 
