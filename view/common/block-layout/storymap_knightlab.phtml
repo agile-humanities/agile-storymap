@@ -6,10 +6,7 @@
         var jsonStorymapUri = '<?php echo $this->url('storymap-block', ['block-id' => $blockId]); ?>';
 
         $.getJSON(jsonStorymapUri, function(data) {
-
-
             var storymapDivID = 'storymap-<?php echo $blockId; ?>';
-            //var storymap_options = {'call_to_action' : true};
             var storymap_options = <?php echo $data['args']['viewer']; ?>;
             window.storymap = new VCO.StoryMap(storymapDivID, data, storymap_options);
 
