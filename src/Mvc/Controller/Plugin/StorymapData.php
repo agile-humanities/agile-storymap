@@ -87,7 +87,7 @@ class StorymapData extends AbstractPlugin {
         $itemDescription = $this->snippet($itemDescription->value(), 200);
       }
       $media = $item->primaryMedia();
-      $mediaUrl = $media ? $media->thumbnailUrl('square') : NULL;
+      $mediaUrl = $media ? $media->thumbnailUrl('large') : NULL;
       $caption = $media->displayTitle();
       // Start building slides
       $slide = [];
