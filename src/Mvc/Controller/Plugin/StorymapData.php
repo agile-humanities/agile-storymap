@@ -106,7 +106,7 @@ class StorymapData extends AbstractPlugin {
 
       $slide['date'] = $itemDate;
       $slide['text'] = [
-        'headline' => "$itemTitle",
+        'headline' => "<a href='$item_url'>$itemTitle</a>",
     'text' => $itemDescription,
       ];
       if ($lat && $long) {
