@@ -47,6 +47,7 @@ class StorymapData extends AbstractPlugin {
       ->getContent();
 
     foreach ($items as $item) {
+      $item_url =  $item->siteUrl($args['site-slug']);
       // Get property values.
       $itemDate = $item->value($propertyItemDate, [
         'type' => 'literal',
@@ -87,7 +88,9 @@ class StorymapData extends AbstractPlugin {
         $itemDescription = $this->snippet($itemDescription->value(), 200);
       }
       $media = $item->primaryMedia();
+      //large, medium, square
       $mediaUrl = $media ? $media->thumbnailUrl('large') : NULL;
+
       $caption = $media->displayTitle();
       // Start building slides
       $slide = [];
@@ -95,14 +98,16 @@ class StorymapData extends AbstractPlugin {
       $itemDate = $itemDate->value();
 
       if ($itemType && strtolower($itemType->value()) == 'overview') {
-        $slide['type'] = $itemType->value();
+        $slide['type'] = strtolower($itemType->value());
         $is_overview = TRUE;
       }
 
+
+
       $slide['date'] = $itemDate;
       $slide['text'] = [
-        'headline' => $itemTitle,
-        'text' => $itemDescription,
+        'headline' => "$itemTitle",
+    'text' => $itemDescription,
       ];
       if ($lat && $long) {
         $slide['location'] = [
@@ -119,11 +124,17 @@ class StorymapData extends AbstractPlugin {
         array_unshift($slides, $slide);
       }
       else {
-        $slides[] = $slide;
+        if ($lat && $long) {
+          $slides[] = $slide;
+        }
       }
     }
     $data = [];
     $data['storymap']['slides'] = $slides;
+    if (isset($args['map_type'])) {
+      $data['storymap']['map_type'] = $args['map_type'];
+    }
+
 
     return $data;
   }

@@ -8,6 +8,7 @@ use Zend\Form\Element\Select;
 use Zend\Form\Element\Text;
 use Zend\Form\Fieldset;
 use Zend\Form\Form;
+use Zend\Form\Element;
 
 class StorymapBlockForm extends Form {
 
@@ -20,6 +21,18 @@ class StorymapBlockForm extends Form {
       ],
     ]);
     $argsFieldset = $this->get('o:block[__blockIndex__][o:data][args]');
+    $map_type = new Element\Select('map_type');
+    $map_type->setLabel('Choose map type');
+    $map_type->setValueOptions(array(
+      'stamen:toner-lite' => 'default',
+      'stamen:toner' => 'High contrast black and white',
+      'stamen:toner-lines' => 'just the lines (mostly roads) from the Toner style',
+      'stamen:toner-labels' => 'just the labels (place names and roads) from the Toner style',
+      'stamen:terrain' => 'map with roads as well as some natural features',
+      'stamen:watercolor' => 'an artistic representation',
+      'osm:standard' => 'maps used by OpenStreetMap',
+      'mapbox:map-id' => 'replace map-id with a Mapbox Map ID (requires a MapBox account)',
+    ));
 
 
     $argsFieldset->add([
@@ -133,6 +146,7 @@ class StorymapBlockForm extends Form {
         'class' => 'chosen-select',
       ],
     ]);
+    $argsFieldset->add($map_type);
     $argsFieldset->add([
       'name' => 'viewer',
       'type' => 'Textarea',

@@ -72,6 +72,7 @@ return [
         'item_location' => 'dcterms:spatial',
         'item_type' => 'dcterms:type',
         'item_contributor' => 'dcterms:contributor',
+        'map_type' => 'default',
         'viewer' => '{}',
         // The id of dcterms:date in the standard install of Omeka S.
         'item_date_id' => '7',

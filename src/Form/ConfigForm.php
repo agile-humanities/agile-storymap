@@ -6,7 +6,7 @@ use Omeka\Form\Element\PropertySelect;
 use Storymap\Mvc\Controller\Plugin\StorymapData;
 use Zend\Form\Element\Checkbox;
 use Zend\Form\Element\Radio;
-use Zend\Form\Element\Text;
+use Zend\Form\Element;
 use Zend\Form\Fieldset;
 use Zend\Form\Form;
 use Zend\I18n\Translator\TranslatorAwareInterface;
@@ -145,6 +145,19 @@ class ConfigForm extends Form implements TranslatorAwareInterface {
         'class' => 'chosen-select',
       ],
     ]);
+    $map_type = new Element\Select('map_type');
+    $map_type->setLabel('Choose map type');
+    $map_type->setValueOptions(array(
+      'stamen:toner-lite' => 'default',
+      'stamen:toner' => 'High contrast black and white',
+      'stamen:toner-lines' => 'just the lines (mostly roads) from the Toner style',
+      'stamen:toner-labels' => 'just the labels (place names and roads) from the Toner style',
+      'stamen:terrain' => 'map with roads as well as some natural features',
+      'stamen:watercolor' => 'an artistic representation',
+      'osm:standard' => 'maps used by OpenStreetMap',
+      'mapbox:map-id' => 'replace map-id with a Mapbox Map ID (requires a MapBox account)',
+    ));
+    $argsFieldset->add($map_type);
     $argsFieldset->add([
       'name' => 'viewer',
       'type' => 'Textarea',
@@ -183,6 +196,10 @@ class ConfigForm extends Form implements TranslatorAwareInterface {
     ]);
     $defaultsFilter->add([
       'name' => 'item_contributor',
+      'required' => FALSE,
+    ]);
+    $defaultsFilter->add([
+      'name' => 'map_type',
       'required' => FALSE,
     ]);
     $defaultsFilter->add([
