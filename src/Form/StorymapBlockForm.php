@@ -146,6 +146,20 @@ class StorymapBlockForm extends Form {
         'class' => 'chosen-select',
       ],
     ]);
+    $argsFieldset->add([
+      'name' => 'map_url',
+      'type' => 'url',
+      'options' => [
+        'info' => 'Leave blank, or supply url from valid image server',
+        'label' => 'Select Gigaplex map', // @translate
+        'empty_option' => '', // @translate
+        'term_as_value' => TRUE,
+      ],
+      'attributes' => [
+        'required' => FALSE,
+        'class' => 'chosen-select',
+      ],
+    ]);
     $argsFieldset->add($map_type);
     $argsFieldset->add([
       'name' => 'viewer',
