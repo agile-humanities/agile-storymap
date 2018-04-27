@@ -47,7 +47,6 @@ class StorymapData extends AbstractPlugin {
       ->getContent();
 
     foreach ($items as $item) {
-      $item_url =  $item->siteUrl($args['site-slug']);
       // Get property values.
       $itemDate = $item->value($propertyItemDate, [
         'type' => 'literal',
@@ -107,7 +106,7 @@ class StorymapData extends AbstractPlugin {
       $slide['date'] = $itemDate;
       $slide['text'] = [
         'headline' => "<a href='$media_url'>$itemTitle</a>",
-    'text' => $itemDescription,
+        'text' => $itemDescription,
       ];
       if ($lat && $long) {
         $slide['location'] = [
@@ -128,11 +127,32 @@ class StorymapData extends AbstractPlugin {
           $slides[] = $slide;
         }
       }
+      if ($itemType && $itemType->value() == 'gigaplex') {
+        $storage = $media->storageId();
+        $is_gigaplex = TRUE;
+
+      }
     }
+    // create option gigaplex
+
+
     $data = [];
     $data['storymap']['slides'] = $slides;
     if (isset($args['map_type'])) {
       $data['storymap']['map_type'] = $args['map_type'];
+    }
+    if ($is_gigaplex) {
+      $data['storymap']['language'] = 'en';
+      $data['storymap']['map_type'] = 'zoomify';
+      $data['storymap']['map_as_image'] = 'true';
+      $data['storymap']['zoomify'] = [
+        'path' => "/files/tile/{$storage}_zdata/",
+        'tolerance' => 0.9,
+        "width" => 21920,
+        "height" => 14656,
+
+      ];
+
     }
 
 

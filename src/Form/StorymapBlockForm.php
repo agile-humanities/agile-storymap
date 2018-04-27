@@ -147,11 +147,11 @@ class StorymapBlockForm extends Form {
       ],
     ]);
     $argsFieldset->add([
-      'name' => 'map_url',
-      'type' => 'url',
+      'name' => 'map_image',
+      'type' => 'text',
       'options' => [
-        'info' => 'Leave blank, or supply url from valid image server',
-        'label' => 'Select Gigaplex map', // @translate
+        'info' => 'Provide Omeka ID of item with Gigaplex tiled image',
+        'label' => 'Select Gigaplex item', // @translate
         'empty_option' => '', // @translate
         'term_as_value' => TRUE,
       ],
