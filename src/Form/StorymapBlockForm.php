@@ -3,9 +3,6 @@
 namespace Storymap\Form;
 
 use Omeka\Form\Element\PropertySelect;
-use Storymap\Mvc\Controller\Plugin\StorymapData;
-use Zend\Form\Element\Select;
-use Zend\Form\Element\Text;
 use Zend\Form\Fieldset;
 use Zend\Form\Form;
 use Zend\Form\Element;
@@ -20,6 +17,8 @@ class StorymapBlockForm extends Form {
         'label' => 'Parameters', // @translate
       ],
     ]);
+
+
     $argsFieldset = $this->get('o:block[__blockIndex__][o:data][args]');
     $map_type = new Element\Select('map_type');
     $map_type->setLabel('Choose map type');
@@ -146,20 +145,7 @@ class StorymapBlockForm extends Form {
         'class' => 'chosen-select',
       ],
     ]);
-    $argsFieldset->add([
-      'name' => 'map_image',
-      'type' => 'text',
-      'options' => [
-        'info' => 'Provide Omeka ID of item with Gigaplex tiled image',
-        'label' => 'Select Gigaplex item', // @translate
-        'empty_option' => '', // @translate
-        'term_as_value' => TRUE,
-      ],
-      'attributes' => [
-        'required' => FALSE,
-        'class' => 'chosen-select',
-      ],
-    ]);
+
     $argsFieldset->add($map_type);
     $argsFieldset->add([
       'name' => 'viewer',
@@ -173,6 +159,49 @@ class StorymapBlockForm extends Form {
         'rows' => 15,
       ],
     ]);
+    $argsFieldset->add([
+      'name' => 'map_background',
+      'type' => 'text',
+      'options' => [
+        'info' => 'Optional background color for gigaplex maps',
+        'label' => 'Select Gigaplex background color', // @translate
+        'empty_option' => '', // @translate
+        'term_as_value' => TRUE,
+      ],
+      'attributes' => [
+        'required' => FALSE,
+        'class' => 'chosen-select',
+      ],
+    ]);
+    $argsFieldset->add([
+      'name' => 'attribution',
+      'type' => 'text',
+      'options' => [
+        'info' => 'Attribution for images in Gigaplex storymaps',
+        'label' => 'Gigaplex Attribution',
+        'empty_option' => '',
+        'term_as_value' => TRUE,
+      ],
+      'attributes' => [
+        'required' => FALSE,
+        'class' => 'chosen-select',
+      ],
+    ]);
+    $argsFieldset->add([
+      'name' => 'tolerance',
+      'type' => 'text',
+      'options' => [
+        'info' => 'Zoomify Tolerance for Gigaplex storymaps - changes potential size of background images.  Default value is .9',
+        'label' => 'Gigaplex Tolerance',
+        'empty_option' => '',
+        'term_as_value' => TRUE,
+      ],
+      'attributes' => [
+        'required' => FALSE,
+        'class' => 'chosen-select',
+      ],
+    ]);
+
     $inputFilter = $this->getInputFilter();
     $inputFilter->add([
       'name' => 'o:block[__blockIndex__][o:data][args]',

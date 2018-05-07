@@ -34,6 +34,7 @@ class StorymapData extends AbstractPlugin {
    */
   public function __invoke(array $itemPool, array $args) {
     $slides = [];
+    $is_gigaplex = FALSE;
     //determine property types.
     $propertyItemTitle = $args['item_title'];
     $propertyItemDescription = $args['item_description'];
@@ -94,7 +95,10 @@ class StorymapData extends AbstractPlugin {
       // Start building slides
       $slide = [];
       $is_overview = FALSE;
-      $itemDate = $itemDate->value();
+      if ($itemDate) {
+        $itemDate = $itemDate->value();
+      }
+
 
       if ($itemType && strtolower($itemType->value()) == 'overview') {
         $slide['type'] = strtolower($itemType->value());
@@ -127,35 +131,40 @@ class StorymapData extends AbstractPlugin {
           $slides[] = $slide;
         }
       }
+
       if ($itemType && $itemType->value() == 'gigaplex') {
         $storage = $media->storageId();
         $is_gigaplex = TRUE;
-
+        $info = getimagesize($mediaUrl);
+        $height = $info[1];
+        $width = $info[0];
       }
     }
-    // create option gigaplex
-
-
+    // create optional gigaplex
     $data = [];
     $data['storymap']['slides'] = $slides;
     if (isset($args['map_type'])) {
       $data['storymap']['map_type'] = $args['map_type'];
     }
     if ($is_gigaplex) {
+      $multiplier = 2.5;
+      if (isset($args['map_background'])) {
+        $data['storymap']['map_background_color'] = $args['map_background'];
+      }
+      $attribution = $args['attribution'];
+      $tolerance = $args['tolerance'] ? $args['tolerance'] : .9;
+      $data['calculate_zoom'] = 'true';
       $data['storymap']['language'] = 'en';
       $data['storymap']['map_type'] = 'zoomify';
       $data['storymap']['map_as_image'] = 'true';
       $data['storymap']['zoomify'] = [
         'path' => "/files/tile/{$storage}_zdata/",
-        'tolerance' => 0.9,
-        "width" => 21920,
-        "height" => 14656,
-
+        'tolerance' => $tolerance,
+        "width" => $width *  $multiplier,
+        "height" => $height * $multiplier,
+        "attribution" => $attribution,
       ];
-
     }
-
-
     return $data;
   }
 
