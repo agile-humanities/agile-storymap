@@ -145,6 +145,19 @@ class StorymapBlockForm extends Form {
         'class' => 'chosen-select',
       ],
     ]);
+    $argsFieldset->add([
+      'name' => 'item_order',
+      'type' => PropertySelect::class,
+      'options' => [
+        'label' => 'Item Order', // @translate
+        'empty_option' => 'Select a property...', // @translate
+        'term_as_value' => TRUE,
+      ],
+      'attributes' => [
+        'required' => FALSE,
+        'class' => 'chosen-select',
+      ],
+    ]);
 
     $argsFieldset->add($map_type);
     $argsFieldset->add([
@@ -163,8 +176,8 @@ class StorymapBlockForm extends Form {
       'name' => 'map_background',
       'type' => 'text',
       'options' => [
-        'info' => 'Optional background color for gigaplex maps',
-        'label' => 'Select Gigaplex background color', // @translate
+        'info' => 'Optional background color for Gigapixel maps',
+        'label' => 'Select Gigapixel background color', // @translate
         'empty_option' => '', // @translate
         'term_as_value' => TRUE,
       ],
@@ -177,8 +190,8 @@ class StorymapBlockForm extends Form {
       'name' => 'attribution',
       'type' => 'text',
       'options' => [
-        'info' => 'Attribution for images in Gigaplex storymaps',
-        'label' => 'Gigaplex Attribution',
+        'info' => 'Attribution for images in Gigapixel storymaps',
+        'label' => 'Gigapixel Attribution',
         'empty_option' => '',
         'term_as_value' => TRUE,
       ],
@@ -191,8 +204,8 @@ class StorymapBlockForm extends Form {
       'name' => 'tolerance',
       'type' => 'text',
       'options' => [
-        'info' => 'Zoomify Tolerance for Gigaplex storymaps - changes potential size of background images.  Default value is .9',
-        'label' => 'Gigaplex Tolerance',
+        'info' => 'Zoomify Tolerance for Gigapixel storymaps - changes potential size of background images.  Default value is .9',
+        'label' => 'Gigapixel Tolerance',
         'empty_option' => '',
         'term_as_value' => TRUE,
       ],

@@ -34,7 +34,7 @@ class StorymapData extends AbstractPlugin {
    */
   public function __invoke(array $itemPool, array $args) {
     $slides = [];
-    $is_gigaplex = FALSE;
+    $is_gigapixel = FALSE;
     //determine property types.
     $propertyItemTitle = $args['item_title'];
     $propertyItemDescription = $args['item_description'];
@@ -42,12 +42,14 @@ class StorymapData extends AbstractPlugin {
     $propertyItemLocation = $args['item_location'];
     $propertyItemType = $args['item_type'];
     $propertyItemContributor = $args['item_contributor'];
-
+    $propertyItemOrder = $args['item_order'];
     $items = $this->getController()->api()
       ->search('items', $itemPool)
       ->getContent();
-
+    // generate fake page ordering for items missing order number.
+    $nullcounter = 1000;
     foreach ($items as $item) {
+      $nullcounter++;
       // Get property values.
       $itemDate = $item->value($propertyItemDate, [
         'type' => 'literal',
@@ -70,6 +72,11 @@ class StorymapData extends AbstractPlugin {
         'type' => 'literal',
         'default' => '',
       ]);
+      $itemOrder = $item->value($propertyItemOrder);
+      $item_order = $nullcounter;
+      if ($itemOrder) {
+        $item_order = $itemOrder->value();
+      }
       $credit = ($itemContributor) ? $itemContributor->value() : 'Unknown';
       $lat = $long = NULL;
       if ($itemLocation) {
@@ -128,26 +135,26 @@ class StorymapData extends AbstractPlugin {
       }
       else {
         if ($lat && $long) {
-          $slides[] = $slide;
+          $slides[$item_order] = $slide;
         }
       }
 
-      if ($itemType && $itemType->value() == 'gigaplex') {
+      if ($itemType && $itemType->value() == strtolower('gigapixel')) {
         $storage = $media->storageId();
-        $is_gigaplex = TRUE;
+        $is_gigapixel = TRUE;
         $info = getimagesize($mediaUrl);
         $height = $info[1];
         $width = $info[0];
       }
     }
-    // create optional gigaplex
+    // create optional gigapixel
     $data = [];
-    $data['storymap']['slides'] = $slides;
+    $data['storymap']['slides'] = array_values($slides);
     if (isset($args['map_type'])) {
       $data['storymap']['map_type'] = $args['map_type'];
     }
-    if ($is_gigaplex) {
-      $multiplier = 2.5;
+    if ($is_gigapixel) {
+      $multiplier = 3;
       if (isset($args['map_background'])) {
         $data['storymap']['map_background_color'] = $args['map_background'];
       }
@@ -160,7 +167,7 @@ class StorymapData extends AbstractPlugin {
       $data['storymap']['zoomify'] = [
         'path' => "/files/tile/{$storage}_zdata/",
         'tolerance' => $tolerance,
-        "width" => $width *  $multiplier,
+        "width" => $width * $multiplier,
         "height" => $height * $multiplier,
         "attribution" => $attribution,
       ];

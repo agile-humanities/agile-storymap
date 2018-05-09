@@ -1,10 +1,9 @@
 Storymap (module for Omeka S)
 =============================
 
-[![Build Status](https://travis-ci.org/Daniel-KM/Omeka-S-module-Storymap.svg?branch=develop,master)](https://travis-ci.org/Daniel-KM/Omeka-S-module-Storymap)
 
 [Storymap] is a module for [Omeka S] that integrates the
-the online [Knightlab storymap] to create storymaps.
+the online [Knightlab storymap] to create Storymaps.
 
 
 
@@ -16,10 +15,7 @@ Uncompress files in the module directory and rename module folder `Storymap`.
 
 Then install it like any other Omeka module and follow the config instructions.
 
-Note: If Omeka is https, if external assets are used, and if the Simile library
-is used, the library will not load on recent browsers, because the online
-library contains an url with unsecure http. In that case, you need to set the
-option "Use Internal library for Simile".
+
 
 Choose which fields you want the module to use on the storymap by default.
 
@@ -29,14 +25,6 @@ Choose which fields you want the module to use on the storymap by default.
   description in its information bubble. The default is `dcterms:description`.
 * Item Date: The field you would like to use for item dates on the storymap.
   The default is `dcterms:date`.
-* Item Date End: The field you would like to use for item end dates on the
-  storymap. It is useless if dates are ranges (see below) or if you don’t have
-  end date.
-* Render Year: Date entered as a single number, like `1066`, can be skipped,
-  plotted as a single event or marked as a full year.
-* Center Date: The date that is displayed by the viewer when loaded. It can
-  be any date with the format `YYYY-MM-DD`. An empty string means now, a
-  `0000-00-00` the earliest date and `9999-99-99` the latest date.
 * Viewer: The raw json parameters for the viewer, for example to display only
   one row, or to change the scale.
 
@@ -66,53 +54,6 @@ Ready! Open the page.
   ![Storymap Page](https://github.com/Daniel-KM/Omeka-S-module-Storymap/blob/master/data/readme/storymap-page-v3-4.png)
 
 
-### Dates for Items
-
-Storymap will attempt to convert the value for a date string into an [ISO 8601]
-date format. Some example date values you can use:
-
-  * `January 1, 2012`
-  * `2012-01-01`
-  * `1 Jan 2012`
-  * `2012-12-15`
-
-To denote spans of time, separate the start and end date with a `/`:
-
-  * `January 1, 2012/February 1, 2012`
-
-A common format is managed too:
-
-  * `1939-1945`
-
-It must be `1939/1945` to be compatible with the standard ISO 8601.
-
-Storymap handles dates with years shorter than 4 digits. For these you may need
-to pad the years with enough zeros to make them have four digits. For example,
-`476` should be written `0476`.
-
-Also, you can enter in years before common era by putting a negative sign before
-the year. If the date has less than four digits, you’ll also need to add extra
-zeros.
-
-So here are some more examples of dates.
-
-  * `0200-01-01`
-  * `0002-01-01`
-  * `-0002-01-01`
-  * `-2013-01-01`
-
-When a date is a single number, like `1066`, a parameter in the config page
-allows to choose its rendering:
-
-  * skip the record (default)
-  * 1st January
-  * 1st July
-  * full year (range period)
-
-This parameter applies with a range of dates too, for example `1939/1945`.
-
-In all cases, it’s recommended to follow the standard [ISO 8601] as much as
-possible and to be as specific as possible.
 
 ### Parameters of the viewer
 
@@ -210,48 +151,30 @@ conditions as regards security.
 The fact that you are presently reading this means that you have had knowledge
 of the CeCILL license and that you accept its terms.
 
-The module uses the widget [SIMILE Storymap], published under the license MIT.
-See files in `asset/vendor` for more info.
-
 
 Contacts
 --------
 
-* Daniel Berthereau (see [Daniel-KM] on GitHub)
+* Agile Humanities (see [Agile] on GitHub)
 
 
 Copyright
 ---------
-
-### Module
-
-* Copyright The Board and Visitors of the University of Virginia, 2010–2012
-* Copyright Daniel Berthereau, 2016-2017
-
-### Translations
-
-* Martin Liebeskind (German)
-* Gillian Price (Spanish)
-* Oguljan Reyimbaeva (Russian)
-* Katina Rogers (French)
-
 
 [Storymap]: https://github.com/Daniel-KM/Omeka-S-module-Storymap
 [Omeka S]: https://omeka.org/s
 [Scholars’ Lab]: http://scholarslab.org
 [fork of NeatlineTime plugin]: https://github.com/Daniel-KM/NeatlineTime
 [Omeka Classic]: http://omeka.org
-[SIMILE Storymap]: http://www.simile-widgets.org/wiki/Storymap
-[wiki]: http://www.simile-widgets.org/wiki/Storymap
 [ISO 8601]: http://www.iso.org/iso/home/standards/iso8601.htm
 [Knightlab storymap]: https://storymap.knightlab.com
 [example of use]: https://docs.neatline.org/working-with-the-simile-storymap-widget.html
 [examples]: http://www.simile-widgets.org/storymap/examples/index.html
-[module issues]: https://github.com/Daniel-KM/Omeka-S-module-Storymap/issues
+[module issues]: https://github.com/agile-humanities/agile-storymap/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [FSF]: https://www.fsf.org
 [OSI]: http://opensource.org
 [themeing-plugin-pages]: http://omeka.org/codex/Theming_Plugin_Pages "Theming Plugin Pages"
 [Scholars’ Lab]: https://github.com/scholarslab
-[Daniel-KM]: https://github.com/Daniel-KM "Daniel Berthereau"
+[Agile]: https://github.com/agile-humanities "Agile Humanities"
