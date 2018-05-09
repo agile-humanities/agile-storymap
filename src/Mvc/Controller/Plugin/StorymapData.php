@@ -48,6 +48,18 @@ class StorymapData extends AbstractPlugin {
       ->getContent();
     // generate fake page ordering for items missing order number.
     $nullcounter = 1000;
+
+    // Create array of alternate text
+    $substitutions = [];
+   if ($args['substitutions']) {
+     $replacements = explode(',', $args['substitutions']);
+     foreach ($replacements as $replacement) {
+       $parts = explode('~', $replacement);
+       $substitutions[trim($parts[0])] = trim($parts[1]);
+     }
+
+   }
+
     foreach ($items as $item) {
       $nullcounter++;
       // Get property values.
@@ -92,7 +104,13 @@ class StorymapData extends AbstractPlugin {
         'default' => '',
       ]);
       if ($itemDescription) {
-        $itemDescription = $this->snippet($itemDescription->value(), 200);
+        if (isset($substitutions[$item_order])) {
+          $itemDescription = $substitutions[$item_order];
+        }
+        else {
+          $itemDescription = $this->snippet($itemDescription->value(), 200);
+        }
+
       }
       $media = $item->primaryMedia();
       //large, medium, square
@@ -131,6 +149,7 @@ class StorymapData extends AbstractPlugin {
         'credit' => $credit,
       ];
       if ($is_overview) {
+        ksort($slides);
         array_unshift($slides, $slide);
       }
       else {
@@ -149,6 +168,7 @@ class StorymapData extends AbstractPlugin {
     }
     // create optional gigapixel
     $data = [];
+   ksort($slides);
     $data['storymap']['slides'] = array_values($slides);
     if (isset($args['map_type'])) {
       $data['storymap']['map_type'] = $args['map_type'];

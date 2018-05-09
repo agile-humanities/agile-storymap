@@ -173,6 +173,18 @@ class StorymapBlockForm extends Form {
       ],
     ]);
     $argsFieldset->add([
+      'name' => 'substitutions',
+      'type' => 'Textarea',
+      'options' => [
+        'label' => 'Text substitutions',
+        'info' => 'Display text which differs from item description.  Enter comma separated slide number ~ new text pairs',
+
+      ],
+      'attributes' => [
+        'rows' => 15,
+      ],
+    ]);
+    $argsFieldset->add([
       'name' => 'map_background',
       'type' => 'text',
       'options' => [
@@ -214,6 +226,7 @@ class StorymapBlockForm extends Form {
         'class' => 'chosen-select',
       ],
     ]);
+
 
     $inputFilter = $this->getInputFilter();
     $inputFilter->add([
