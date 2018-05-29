@@ -106,7 +106,6 @@ class Module extends AbstractModule
             ->search('properties', ['vocabulary_prefix' => $vocabulary, 'local_name' => $name])
             ->getContent();
         $property = reset($property);
-        $params['storymap_defaults']['item_date_id'] = (string) $property->id();
 
         $defaultSettings = $config[strtolower(__NAMESPACE__)]['settings'];
         foreach ($params as $name => $value) {

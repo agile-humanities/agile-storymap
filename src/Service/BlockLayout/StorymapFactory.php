@@ -17,8 +17,6 @@ class StorymapFactory implements FactoryInterface
     {
         $apiManager = $services->get('Omeka\ApiManager');
         $formElementManager = $services->get('FormElementManager');
-        $config = $services->get('Config');
-        $useExternal = $config['assets']['use_externals'];
-        return new Storymap($apiManager, $formElementManager, $useExternal);
+        return new Storymap($apiManager, $formElementManager);
     }
 }

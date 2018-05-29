@@ -49,17 +49,6 @@ class StorymapData extends AbstractPlugin {
     // generate fake page ordering for items missing order number.
     $nullcounter = 1000;
 
-    // Create array of alternate text
-    $substitutions = [];
-   if ($args['substitutions']) {
-     $replacements = explode(',', $args['substitutions']);
-     foreach ($replacements as $replacement) {
-       $parts = explode('~', $replacement);
-       $substitutions[trim($parts[0])] = trim($parts[1]);
-     }
-
-   }
-
     foreach ($items as $item) {
       $nullcounter++;
       // Get property values.
@@ -104,13 +93,7 @@ class StorymapData extends AbstractPlugin {
         'default' => '',
       ]);
       if ($itemDescription) {
-        if (isset($substitutions[$item_order])) {
-          $itemDescription = $substitutions[$item_order];
-        }
-        else {
-          $itemDescription = $this->snippet($itemDescription->value(), 200);
-        }
-
+        $itemDescription = $this->snippet($itemDescription->value(), 200);
       }
       $media = $item->primaryMedia();
       //large, medium, square
@@ -124,12 +107,10 @@ class StorymapData extends AbstractPlugin {
         $itemDate = $itemDate->value();
       }
 
-
       if ($itemType && strtolower($itemType->value()) == 'overview') {
         $slide['type'] = strtolower($itemType->value());
         $is_overview = TRUE;
       }
-
 
       $media_url = $media->siteUrl($args['site-slug']);
       $slide['date'] = $itemDate;
@@ -149,6 +130,7 @@ class StorymapData extends AbstractPlugin {
         'credit' => $credit,
       ];
       if ($is_overview) {
+        // unshift will reorder array - must be ksorted first.
         ksort($slides);
         array_unshift($slides, $slide);
       }
@@ -168,7 +150,7 @@ class StorymapData extends AbstractPlugin {
     }
     // create optional gigapixel
     $data = [];
-   ksort($slides);
+    ksort($slides);
     $data['storymap']['slides'] = array_values($slides);
     if (isset($args['map_type'])) {
       $data['storymap']['map_type'] = $args['map_type'];

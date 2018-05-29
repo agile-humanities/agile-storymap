@@ -165,25 +165,14 @@ class StorymapBlockForm extends Form {
       'type' => 'Textarea',
       'options' => [
         'label' => 'Viewer',
-        'info' => 'Set the default params of the viewer as json, or let empty for the included default.',
+        'info' => 'Set the default params of the viewer as json, or leave empty for the included default.',
 
       ],
       'attributes' => [
         'rows' => 15,
       ],
     ]);
-    $argsFieldset->add([
-      'name' => 'substitutions',
-      'type' => 'Textarea',
-      'options' => [
-        'label' => 'Text substitutions',
-        'info' => 'Display text which differs from item description.  Enter comma separated slide number ~ new text pairs',
 
-      ],
-      'attributes' => [
-        'rows' => 15,
-      ],
-    ]);
     $argsFieldset->add([
       'name' => 'map_background',
       'type' => 'text',
