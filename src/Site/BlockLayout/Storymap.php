@@ -55,7 +55,7 @@ class Storymap extends AbstractBlockLayout {
                        SitePageRepresentation $page = NULL, SitePageBlockRepresentation $block = NULL
   ) {
     $data = $block ? $block->data() : [];
-
+    $attachments = $view->blockAttachmentsForm($block);
     $form = $this->formElementManager->get(StorymapBlockForm::class);
     $form->init();
 
@@ -79,6 +79,7 @@ class Storymap extends AbstractBlockLayout {
       [
         'form' => $form,
         'data' => $data,
+        'attachments' => $attachments,
         'itemCount' => $itemCount,
       ]
     );

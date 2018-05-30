@@ -145,19 +145,6 @@ class StorymapBlockForm extends Form {
         'class' => 'chosen-select',
       ],
     ]);
-    $argsFieldset->add([
-      'name' => 'item_order',
-      'type' => PropertySelect::class,
-      'options' => [
-        'label' => 'Item Order', // @translate
-        'empty_option' => 'Select a property...', // @translate
-        'term_as_value' => TRUE,
-      ],
-      'attributes' => [
-        'required' => FALSE,
-        'class' => 'chosen-select',
-      ],
-    ]);
 
     $argsFieldset->add($map_type);
     $argsFieldset->add([

@@ -28,7 +28,7 @@ class StorymapController extends AbstractActionController
         // Get the site slug directly via the page.
         $blockData['args']['site-slug'] = $block->getPage()->getSite()->getSlug();
 
-        $data = $this->storymapData($blockData['item_pool'], $blockData['args']);
+        $data = $this->storymapData($blockData['item_pool'], $blockData['args'], $block);
 
         $view = new JsonModel();
         $view->setVariables($data);
