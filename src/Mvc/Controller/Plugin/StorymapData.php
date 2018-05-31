@@ -22,6 +22,7 @@ class StorymapData extends AbstractPlugin {
    */
   public function __invoke(array $itemPool, array $args, $block) {
     $slides = [];
+    $gigapixel_item = NULL;
     $attachments = $block->getAttachments();
     $captions = [];
     // Captions are specific to the individual Storymap and are not stored in the item.
@@ -32,7 +33,18 @@ class StorymapData extends AbstractPlugin {
       $attachment_items[] = $attachment_item;
       $captions[$attachment_item->id()] = $attachment->getCaption();
     }
-    $is_gigapixel = FALSE;
+
+    if ($args['gigapixel_image']) {
+      $gigapixel_item = $this->getController()->api()
+        ->read('items', $args['gigapixel_image'])
+        ->getContent();
+      $media = $gigapixel_item->primaryMedia();
+      $storage = $media->storageId();
+      $mediaUrl = $media ? $media->thumbnailUrl('large') : NULL;
+      $info = getimagesize($mediaUrl);
+      $height = $info[1];
+      $width = $info[0];
+    }
     //determine property types.
     $propertyItemTitle = $args['item_title'];
     $propertyItemDescription = $args['item_description'];
@@ -40,6 +52,7 @@ class StorymapData extends AbstractPlugin {
     $propertyItemLocation = $args['item_location'];
     $propertyItemType = $args['item_type'];
     $propertyItemContributor = $args['item_contributor'];
+    $has_overview = FALSE;
 
     foreach ($attachment_items as $item) {
       // Get property values.
@@ -94,16 +107,18 @@ class StorymapData extends AbstractPlugin {
 
       $caption = $media->displayTitle();
       // Start building slides
-      $slide = [];
       $is_overview = FALSE;
+      $slide = [];
       if ($itemDate) {
         $itemDate = $itemDate->value();
       }
 
-      if ($itemType && strtolower($itemType->value()) == 'overview') {
-        $slide['type'] = strtolower($itemType->value());
+      if (!$has_overview) {
+        $slide['type'] = 'overview';
+        $has_overview = TRUE;
         $is_overview = TRUE;
       }
+
 
       $media_url = $media->siteUrl($args['site-slug']);
       $slide['date'] = $itemDate;
@@ -122,30 +137,18 @@ class StorymapData extends AbstractPlugin {
         'caption' => $caption,
         'credit' => $credit,
       ];
-      if ($is_overview) {
-        array_unshift($slides, $slide);
-      }
-      else {
-        if ($lat && $long) {
-          $slides[] = $slide;
-        }
-      }
-
-      if ($itemType && $itemType->value() == strtolower('gigapixel')) {
-        $storage = $media->storageId();
-        $is_gigapixel = TRUE;
-        $info = getimagesize($mediaUrl);
-        $height = $info[1];
-        $width = $info[0];
+      if ($lat && $long || $is_overview) {
+        $slides[] = $slide;
       }
     }
-    // create optional gigapixel
+
     $data = [];
     $data['storymap']['slides'] = array_values($slides);
     if (isset($args['map_type'])) {
       $data['storymap']['map_type'] = $args['map_type'];
     }
-    if ($is_gigapixel) {
+    // create optional gigapixel
+    if ($gigapixel_item) {
       $multiplier = 3;
       if (isset($args['map_background'])) {
         $data['storymap']['map_background_color'] = $args['map_background'];

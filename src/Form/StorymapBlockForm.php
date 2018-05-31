@@ -3,9 +3,10 @@
 namespace Storymap\Form;
 
 use Omeka\Form\Element\PropertySelect;
+use Omeka\Form\Element\ResourceSelect;
+use Zend\Form\Element;
 use Zend\Form\Fieldset;
 use Zend\Form\Form;
-use Zend\Form\Element;
 
 class StorymapBlockForm extends Form {
 
@@ -22,7 +23,7 @@ class StorymapBlockForm extends Form {
     $argsFieldset = $this->get('o:block[__blockIndex__][o:data][args]');
     $map_type = new Element\Select('map_type');
     $map_type->setLabel('Choose map type');
-    $map_type->setValueOptions(array(
+    $map_type->setValueOptions([
       'stamen:toner-lite' => 'default',
       'stamen:toner' => 'High contrast black and white',
       'stamen:toner-lines' => 'just the lines (mostly roads) from the Toner style',
@@ -31,7 +32,7 @@ class StorymapBlockForm extends Form {
       'stamen:watercolor' => 'an artistic representation',
       'osm:standard' => 'maps used by OpenStreetMap',
       'mapbox:map-id' => 'replace map-id with a Mapbox Map ID (requires a MapBox account)',
-    ));
+    ]);
 
 
     $argsFieldset->add([
@@ -93,7 +94,7 @@ class StorymapBlockForm extends Form {
       'options' => [
         'label' => 'Item date',
         // @translate
-        'info' =>'The date field to use to retrieve and display items on a storymap. Default is "dcterms:date".',
+        'info' => 'The date field to use to retrieve and display items on a storymap. Default is "dcterms:date".',
         // @translate
         'empty_option' => 'Select a property...',
         // @translate
@@ -159,10 +160,41 @@ class StorymapBlockForm extends Form {
         'rows' => 15,
       ],
     ]);
+    $argsFieldset->add([
+      'name' => 'gigapixel_image',
+      'type' => ResourceSelect::class,
+      'attributes' => [
+        'value' => NULL,
+        'class' => 'chosen-select',
+        'data-placeholder' => 'Select an image', // @translate
+      ],
+      'options' => [
+        'label' => 'Potential background images', // @translate
+        'empty_option' => '',
+        'resource_value_options' => [
+          'resource' => 'items',
+          'query' => [
+            'joiner' => 'and',
+            'property' => "8",
+            'type' => "eq",
+            'text' => 'gigapixel',
+          ],
+          'option_text_callback' => function ($image) {
+            $itemType = $image->value('dcterms:type', [
+              'type' => 'literal',
+              'default' => '',
+            ]);
+            if ($itemType && $itemType->value() == 'gigapixel') {
+              return $image->displayTitle();
+            }
 
+          },
+        ],
+      ],
+    ]);
     $argsFieldset->add([
       'name' => 'map_background',
-      'type' => 'text',
+      'type' => 'Zend\Form\Element\Color',
       'options' => [
         'info' => 'Optional background color for Gigapixel maps',
         'label' => 'Select Gigapixel background color', // @translate

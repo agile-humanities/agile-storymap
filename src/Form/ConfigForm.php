@@ -145,6 +145,7 @@ class ConfigForm extends Form implements TranslatorAwareInterface {
         'class' => 'chosen-select',
       ],
     ]);
+
     $map_type = new Element\Select('map_type');
     $map_type->setLabel('Choose map type');
     $map_type->setValueOptions(array(
