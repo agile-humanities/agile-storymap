@@ -50,9 +50,8 @@ class StorymapData extends AbstractPlugin {
     $propertyItemDescription = $args['item_description'];
     $propertyItemDate = $args['item_date'];
     $propertyItemLocation = $args['item_location'];
-    $propertyItemType = $args['item_type'];
     $propertyItemContributor = $args['item_contributor'];
-    $has_overview = FALSE;
+    $needs_overview = $args['overview'] == 'overview';
 
     foreach ($attachment_items as $item) {
       // Get property values.
@@ -65,10 +64,6 @@ class StorymapData extends AbstractPlugin {
         'default' => '',
       ]);
       $itemLocation = $item->value($propertyItemLocation, [
-        'type' => 'literal',
-        'default' => '',
-      ]);
-      $itemType = $item->value($propertyItemType, [
         'type' => 'literal',
         'default' => '',
       ]);
@@ -113,9 +108,9 @@ class StorymapData extends AbstractPlugin {
         $itemDate = $itemDate->value();
       }
 
-      if (!$has_overview) {
+      if ($needs_overview) {
         $slide['type'] = 'overview';
-        $has_overview = TRUE;
+        $needs_overview = FALSE;
         $is_overview = TRUE;
       }
 

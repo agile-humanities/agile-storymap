@@ -34,6 +34,21 @@ class StorymapBlockForm extends Form {
       'mapbox:map-id' => 'replace map-id with a Mapbox Map ID (requires a MapBox account)',
     ]);
 
+    $argsFieldset->add([
+      'type' => Element\Checkbox::class,
+      'name' => 'overview',
+      'options' => [
+        'label' => 'Use first asset in list as overview?',
+        'info' => "The Storymap does not require an overview slide, but it is strongly recommended",
+        'use_hidden_element' => TRUE,
+        'checked_value' => 'overview',
+        'unchecked_value' => 'no',
+      ],
+      'attributes' => [
+        'value' => 'overview',
+      ],
+    ]);
+
 
     $argsFieldset->add([
       'name' => 'item_title',
@@ -119,20 +134,7 @@ class StorymapBlockForm extends Form {
         'class' => 'chosen-select',
       ],
     ]);
-    $argsFieldset->add([
-      'name' => 'item_type',
-      'type' => PropertySelect::class,
-      'options' => [
-        'info' => "Slide type - must be either blank, or 'overview'",
-        'label' => 'Item type', // @translate
-        'empty_option' => 'Select a property...', // @translate
-        'term_as_value' => TRUE,
-      ],
-      'attributes' => [
-        'required' => FALSE,
-        'class' => 'chosen-select',
-      ],
-    ]);
+
     $argsFieldset->add([
       'name' => 'item_contributor',
       'type' => PropertySelect::class,
@@ -169,7 +171,7 @@ class StorymapBlockForm extends Form {
         'data-placeholder' => 'Select an image', // @translate
       ],
       'options' => [
-        'label' => 'Potential background images', // @translate
+        'label' => 'Select image for gigapixel display', // @translate
         'empty_option' => '',
         'resource_value_options' => [
           'resource' => 'items',
