@@ -23,8 +23,7 @@ Choose which fields you want the module to use on the storymap by default.
   information bubble. The default is `dcterms:title`.
 * Item Description: The field you would like displayed for the item’s
   description in its information bubble. The default is `dcterms:description`.
-* Item Date: The field you would like to use for item dates on the storymap.
-  The default is `dcterms:date`.
+
 * Viewer: The raw json parameters for the viewer, for example to display only
   one row, or to change the scale.
 
@@ -34,78 +33,14 @@ All these parameters can be customized for each storymap.
 Usage
 -----
 
-Once enabled, the module adds a new block for site pages. Simply select it and
-config it (the item pool and eventually the options).
-
-### Add a Storymap Block
-
-Creating a storymap is a two-step process:
-
-1. From the admin panel, edit a page, then click the "Storymap" button in the
-  list of new blocks to add.
-
-2. To choose which items appear on your storymap, fill the "Item Pool" form. The
-  options are the same than in the config by default (see above).
-
-  ![Storymap Block](https://github.com/Daniel-KM/Omeka-S-module-Storymap/blob/master/data/readme/storymap-block-v3-4.png)
-
-Ready! Open the page.
-
-  ![Storymap Page](https://github.com/Daniel-KM/Omeka-S-module-Storymap/blob/master/data/readme/storymap-page-v3-4.png)
+Once enabled, the module adds a new block for site pages. Simply select it and add attachments.  Other than the optional title slide, each attachment must have geocordinates in the form of lat, long.  ex. (38.685754, -123.430199). 
 
 
-
-### Parameters of the viewer
-
-Some parameters of the viewer may be customized for each storymap. Currently,
-only the `CenterDate` and the `bandInfos` are managed for the Simile storymap.
-The default is automatically included when the field is empty.
-
-```javascript
-{
-    "bandInfos": [
-        {
-            "width": "80%",
-            "intervalUnit": Storymap.DateTime.MONTH,
-            "intervalPixels": 100,
-            "zoomIndex": 10,
-            "zoomSteps": new Array(
-                {"pixelsPerInterval": 280, "unit": Storymap.DateTime.HOUR},
-                {"pixelsPerInterval": 140, "unit": Storymap.DateTime.HOUR},
-                {"pixelsPerInterval": 70, "unit": Storymap.DateTime.HOUR},
-                {"pixelsPerInterval": 35, "unit": Storymap.DateTime.HOUR},
-                {"pixelsPerInterval": 400, "unit": Storymap.DateTime.DAY},
-                {"pixelsPerInterval": 200, "unit": Storymap.DateTime.DAY},
-                {"pixelsPerInterval": 100, "unit": Storymap.DateTime.DAY},
-                {"pixelsPerInterval": 50, "unit": Storymap.DateTime.DAY},
-                {"pixelsPerInterval": 400, "unit": Storymap.DateTime.MONTH},
-                {"pixelsPerInterval": 200, "unit": Storymap.DateTime.MONTH},
-                {"pixelsPerInterval": 100, "unit": Storymap.DateTime.MONTH} // DEFAULT zoomIndex
-            )
-        },
-        {
-            "overview": true,
-            "width": "20%",
-            "intervalUnit": Storymap.DateTime.YEAR,
-            "intervalPixels": 200
-        }
-    ]
-}
-```
 
 
 ### Modifying the block template for Storymap
 
 To modify the block template, copy it in your theme (file `view/common/block-layout/storymap.phtml`).
-
-### Modifying the viewer
-
-The template file used to load the storymap is `asset/js/storymap.js`.
-
-You can copy it in your `themes/my_theme/asset/js` folder to customize it. The
-same for the default css. See the main [wiki], an [example of use] with Neatline
-for Omeka Classic, and the [examples] of customization on the wiki.
-
 
 Warning
 -------
@@ -161,15 +96,13 @@ Contacts
 Copyright
 ---------
 
-[Storymap]: https://github.com/Daniel-KM/Omeka-S-module-Storymap
+[Storymap]: https://github.com/agile-humanities/agile-storymap
 [Omeka S]: https://omeka.org/s
 [Scholars’ Lab]: http://scholarslab.org
 [fork of NeatlineTime plugin]: https://github.com/Daniel-KM/NeatlineTime
 [Omeka Classic]: http://omeka.org
 [ISO 8601]: http://www.iso.org/iso/home/standards/iso8601.htm
 [Knightlab storymap]: https://storymap.knightlab.com
-[example of use]: https://docs.neatline.org/working-with-the-simile-storymap-widget.html
-[examples]: http://www.simile-widgets.org/storymap/examples/index.html
 [module issues]: https://github.com/agile-humanities/agile-storymap/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
