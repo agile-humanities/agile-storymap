@@ -75,7 +75,7 @@ return [
         'map_type' => 'default',
         'viewer' => '{}',
         // The id of dcterms:date in the standard install of Omeka S.
-        'item_date_id' => '7',
+        //'item_date_id' => '7',
       ],
     ],
   ],

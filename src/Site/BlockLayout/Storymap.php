@@ -35,10 +35,9 @@ class Storymap extends AbstractBlockLayout {
    * @param FormElementManager $formElementManager
    * @param bool $useExternal
    */
-  public function __construct(ApiManager $apiManager, FormElementManager $formElementManager, $useExternal) {
+  public function __construct(ApiManager $apiManager, FormElementManager $formElementManager) {
     $this->apiManager = $apiManager;
     $this->formElementManager = $formElementManager;
-    $this->useExternal = $useExternal;
   }
 
   public function getLabel() {
@@ -56,7 +55,7 @@ class Storymap extends AbstractBlockLayout {
                        SitePageRepresentation $page = NULL, SitePageBlockRepresentation $block = NULL
   ) {
     $data = $block ? $block->data() : [];
-
+    $attachments = $view->blockAttachmentsForm($block);
     $form = $this->formElementManager->get(StorymapBlockForm::class);
     $form->init();
 
@@ -80,6 +79,7 @@ class Storymap extends AbstractBlockLayout {
       [
         'form' => $form,
         'data' => $data,
+        'attachments' => $attachments,
         'itemCount' => $itemCount,
       ]
     );
@@ -124,15 +124,6 @@ class Storymap extends AbstractBlockLayout {
       $data['args']['viewer'] = '{}';
     }
 
-    $vocabulary = strtok($data['args']['item_date'], ':');
-    $name = strtok(':');
-    $property = $this->apiManager
-      ->search('properties', [
-        'vocabulary_prefix' => $vocabulary,
-        'local_name' => $name,
-      ])
-      ->getContent();
-    $data['args']['item_date_id'] = (string) $property[0]->id();
 
     $block->setData($data);
   }
@@ -149,7 +140,6 @@ class Storymap extends AbstractBlockLayout {
     // Add the param for the date: return only if not empty.
     $params['property'][] = [
       'joiner' => 'and',
-      'property' => $data['args']['item_date_id'],
       'type' => 'ex',
     ];
     $params['limit'] = 0;

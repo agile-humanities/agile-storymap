@@ -3,9 +3,10 @@
 namespace Storymap\Form;
 
 use Omeka\Form\Element\PropertySelect;
+use Omeka\Form\Element\ResourceSelect;
+use Zend\Form\Element;
 use Zend\Form\Fieldset;
 use Zend\Form\Form;
-use Zend\Form\Element;
 
 class StorymapBlockForm extends Form {
 
@@ -22,7 +23,7 @@ class StorymapBlockForm extends Form {
     $argsFieldset = $this->get('o:block[__blockIndex__][o:data][args]');
     $map_type = new Element\Select('map_type');
     $map_type->setLabel('Choose map type');
-    $map_type->setValueOptions(array(
+    $map_type->setValueOptions([
       'stamen:toner-lite' => 'default',
       'stamen:toner' => 'High contrast black and white',
       'stamen:toner-lines' => 'just the lines (mostly roads) from the Toner style',
@@ -31,7 +32,22 @@ class StorymapBlockForm extends Form {
       'stamen:watercolor' => 'an artistic representation',
       'osm:standard' => 'maps used by OpenStreetMap',
       'mapbox:map-id' => 'replace map-id with a Mapbox Map ID (requires a MapBox account)',
-    ));
+    ]);
+
+    $argsFieldset->add([
+      'type' => Element\Checkbox::class,
+      'name' => 'overview',
+      'options' => [
+        'label' => 'Use first asset in list as overview?',
+        'info' => "The Storymap does not require an overview slide, but it is strongly recommended",
+        'use_hidden_element' => TRUE,
+        'checked_value' => 'overview',
+        'unchecked_value' => 'no',
+      ],
+      'attributes' => [
+        'value' => 'overview',
+      ],
+    ]);
 
 
     $argsFieldset->add([
@@ -93,7 +109,7 @@ class StorymapBlockForm extends Form {
       'options' => [
         'label' => 'Item date',
         // @translate
-        'info' =>'The date field to use to retrieve and display items on a storymap. Default is "dcterms:date".',
+        'info' => 'The date field to use to retrieve and display items on a storymap. Default is "dcterms:date".',
         // @translate
         'empty_option' => 'Select a property...',
         // @translate
@@ -118,38 +134,12 @@ class StorymapBlockForm extends Form {
         'class' => 'chosen-select',
       ],
     ]);
-    $argsFieldset->add([
-      'name' => 'item_type',
-      'type' => PropertySelect::class,
-      'options' => [
-        'info' => "Slide type - must be either blank, or 'overview'",
-        'label' => 'Item type', // @translate
-        'empty_option' => 'Select a property...', // @translate
-        'term_as_value' => TRUE,
-      ],
-      'attributes' => [
-        'required' => FALSE,
-        'class' => 'chosen-select',
-      ],
-    ]);
+
     $argsFieldset->add([
       'name' => 'item_contributor',
       'type' => PropertySelect::class,
       'options' => [
         'label' => 'Media credit', // @translate
-        'empty_option' => 'Select a property...', // @translate
-        'term_as_value' => TRUE,
-      ],
-      'attributes' => [
-        'required' => FALSE,
-        'class' => 'chosen-select',
-      ],
-    ]);
-    $argsFieldset->add([
-      'name' => 'item_order',
-      'type' => PropertySelect::class,
-      'options' => [
-        'label' => 'Item Order', // @translate
         'empty_option' => 'Select a property...', // @translate
         'term_as_value' => TRUE,
       ],
@@ -165,7 +155,7 @@ class StorymapBlockForm extends Form {
       'type' => 'Textarea',
       'options' => [
         'label' => 'Viewer',
-        'info' => 'Set the default params of the viewer as json, or let empty for the included default.',
+        'info' => 'Set the default params of the viewer as json, or leave empty for the included default.',
 
       ],
       'attributes' => [
@@ -173,20 +163,40 @@ class StorymapBlockForm extends Form {
       ],
     ]);
     $argsFieldset->add([
-      'name' => 'substitutions',
-      'type' => 'Textarea',
-      'options' => [
-        'label' => 'Text substitutions',
-        'info' => 'Display text which differs from item description.  Enter comma separated slide number ~ new text pairs',
-
-      ],
+      'name' => 'gigapixel_image',
+      'type' => ResourceSelect::class,
       'attributes' => [
-        'rows' => 15,
+        'value' => NULL,
+        'class' => 'chosen-select',
+        'data-placeholder' => 'Select an image', // @translate
+      ],
+      'options' => [
+        'label' => 'Select image for gigapixel display', // @translate
+        'empty_option' => '',
+        'resource_value_options' => [
+          'resource' => 'items',
+          'query' => [
+            'joiner' => 'and',
+            'property' => "8",
+            'type' => "eq",
+            'text' => 'gigapixel',
+          ],
+          'option_text_callback' => function ($image) {
+            $itemType = $image->value('dcterms:type', [
+              'type' => 'literal',
+              'default' => '',
+            ]);
+            if ($itemType && $itemType->value() == 'gigapixel') {
+              return $image->displayTitle();
+            }
+
+          },
+        ],
       ],
     ]);
     $argsFieldset->add([
       'name' => 'map_background',
-      'type' => 'text',
+      'type' => 'Zend\Form\Element\Color',
       'options' => [
         'info' => 'Optional background color for Gigapixel maps',
         'label' => 'Select Gigapixel background color', // @translate
