@@ -92,7 +92,7 @@ class Storymap extends AbstractBlockLayout {
     $view->headLink()
       ->appendStylesheet('//cdn.knightlab.com/libs/storymapjs/latest/css/storymap.css');
     $view->headScript()
-      ->appendFile('//cdn.knightlab.com/libs/storymapjs/latest/js/storymap.js');
+      ->appendFile('//http://cdn.knightlab.com/libs/storymapjs/0.7.2/js/storymap.js');
 
   }
 
